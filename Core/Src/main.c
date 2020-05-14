@@ -28,10 +28,11 @@
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
-int delay_mainmenu = 5000;
-int delay_clear = 2000;
+/* Initial variables */
 char scene[1920];
 char buffer[1];
+char c;
+char x
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
@@ -63,22 +64,6 @@ static void MX_TIM4_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-void scene_mainmenu(char scene[1920]){
-	/* For observing the beginning of a pixel */
-	scene[0] = 'S'; scene[1] = 'T'; scene[2] = 'A'; scene[3] = 'R'; scene[4] = 'T';
-
-	scene[80*11 + 36] = 'S';
-	scene[80*11 + 37] = 'N';
-	scene[80*11 + 38] = 'A';
-	scene[80*11 + 39] = 'K';
-	scene[80*11 + 40] = 'E';
-	scene[80*11 + 43] = 'G';
-	scene[80*11 + 44] = 'O';
-}
-
-void scene_clear(char scene[1920]){
-	for(int i=0;i<1920; i++) scene[i] = ' ';
-}
 /* USER CODE END 0 */
 
 /**
@@ -94,7 +79,7 @@ int main(void)
   /* MCU Configuration--------------------------------------------------------*/
 
   /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
-  HAL_Init();
+k  HAL_Init();
 
   /* USER CODE BEGIN Init */
 
@@ -113,15 +98,11 @@ int main(void)
   MX_TIM4_Init();
   /* USER CODE BEGIN 2 */
 
-
   scene_clear(scene);
   scene_mainmenu(scene);
 
   printf("\033[2J\033[H"); /* Clear putty screen */
   HAL_UART_Receive_IT( &huart2, buffer, sizeof(buffer));
-  HAL_Delay(delay_mainmenu);
-  //snake_init(scene);
-
   /* USER CODE END 2 */
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
@@ -129,9 +110,8 @@ int main(void)
   {
     /* USER CODE END WHILE */
     /* USER CODE BEGIN 3 */
-	  //snake_move(scene);
 	  HAL_UART_Transmit( &huart2, scene, 1920, 100000);
-	  HAL_Delay(1000);
+	  HAL_Delay(500);
   }
   /* USER CODE END 3 */
 }
@@ -305,43 +285,61 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
-void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart){
+
+void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart){
     /* Get character from UART. Note that does not read two byte characters like arrows. */
-    char c = buffer[0];
+
+
 
     switch(c) {
     case 'w' :
-        snake_set_direction(UP);
+        snake_setDirection(UP);
         break;
     case 'W' :
-        snake_set_direction(UP);
+        snake_setDirection(UP);
         break;
         /* Move snake in DOWN direction if allowed */
     case 's' :
-        snake_set_direction(DOWN);
+        snake_setDirection(DOWN);
         break;
     case 'S' :
-        snake_set_direction(DOWN);
+        snake_setDirection(DOWN);
         break;
         /* Move snake in LEFT direction if allowed */
     case 'a' :
-        snake_set_direction(LEFT);
+        snake_setDirection(LEFT);
         break;
     case 'A' :
-        snake_set_direction(LEFT);
+        snake_setDirection(LEFT);
         break;
         /* Move snake in RIGHT direction if allowed */
     case 'd' :
-        snake_set_direction(RIGHT);
+        snake_setDirection(RIGHT);
         break;
     case 'D' :
-        snake_set_direction(RIGHT);
+        snake_setDirection(RIGHT);
         break;
     case 'K' :
+    	scene_clear(scene);
     	snake_init(scene);
     	break;
     case 'k' :
+    	scene_clear(scene);
         snake_init(scene);
+        break;
+    case 'L' :
+    	scene_clear(scene);
+        scene_mainmenu(scene);
+        break;
+    case 'l' :
+    	scene_clear(scene);
+    	scene_mainmenu(scene);
+        break;
+    case 'M' :
+    	snake_move(scene);
+        break;
+    case 'm' :
+    	snake_move(scene);
         break;
     default :
         break;

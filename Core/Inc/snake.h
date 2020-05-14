@@ -14,8 +14,14 @@ void snake_enqueue(int x, int y, char scene[1920]);
 
 void snake_dequeue(char scene[1920]);
 
-void snake_set_direction(int direction);
+void snake_setDirection(int direction);
 
 void snake_move(char scene[1920]) ;
+
+void scene_setPixel(char scene[1920], int pixel);
+
+void scene_mainmenu(char scene[1920]);
+
+void scene_clear(char scene[1920]);
 
 #endif /* SRC_SNAKE_H_ */

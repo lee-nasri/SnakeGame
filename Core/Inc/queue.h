@@ -1,10 +1,3 @@
-/*
- * queue.h
- *
- *  Created on: May 14, 2020
- *      Author: Nasmeen
- */
-
 #ifndef INC_QUEUE_H_
 #define INC_QUEUE_H_
 

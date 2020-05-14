@@ -1,9 +1,6 @@
 // C program for array implementation of queue
 #include "queue.h"
 
-
-
-
 // function to create a queue of given capacity.
 // It initializes size of queue as 0
 struct Queue* createQueue(unsigned capacity){
@@ -32,7 +29,6 @@ void enqueue(struct Queue* queue, int item)
     queue->rear = (queue->rear + 1)%queue->capacity;
     queue->array[queue->rear] = item;
     queue->size = queue->size + 1;
-    printf("%d enqueued to queue\n", item);
 }
 
 // Function to remove an item from queue.
