@@ -31,6 +31,7 @@
 /* Initial variables */
 char scene[1920];
 char buffer[1];
+char clearSceen_code[13]  = "\033[2J\033[H";
 char c;
 /* USER CODE END PTD */
 
@@ -99,8 +100,6 @@ int main(void)
 
   scene_clear(scene);
   scene_mainmenu(scene);
-
-  printf("\033[2J\033[H"); /* Clear putty screen */
   HAL_UART_Receive_IT( &huart2, buffer, 1);
   /* USER CODE END 2 */
   /* Infinite loop */
@@ -109,6 +108,7 @@ int main(void)
   {
     /* USER CODE END WHILE */
     /* USER CODE BEGIN 3 */
+	  HAL_UART_Transmit( &huart2, clearSceen_code, 13, 100000);
 	  snake_move(scene);
 	  HAL_UART_Transmit( &huart2, scene, 1920, 100000);
 	  HAL_Delay(200);

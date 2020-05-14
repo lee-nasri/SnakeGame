@@ -15,6 +15,15 @@ void snake_init(char scene[1920]){
 	snake_y = createQueue(1000);
 	snake_direction = RIGHT;
 	for (int x = 0; x < 5; ++x) { snake_enqueue(x, 0, scene); }
+	scene[80*22 + 0] = 'S';
+	scene[80*22 + 1] = 'c';
+	scene[80*22 + 2] = 'o';
+	scene[80*22 + 3] = 'r';
+	scene[80*22 + 4] = 'e';
+	scene[80*22 + 6] = ':';
+	scene[80*22 + 8] = '0';
+	scene[80*22 + 9] = '0';
+	scene[80*22 + 10] = '0';
 	snake_head_x = rear(snake_x);
 	snake_head_y = rear(snake_y);
 	snake_tail_x = front(snake_x);
@@ -22,7 +31,7 @@ void snake_init(char scene[1920]){
 }
 
 void snake_enqueue(int x, int y, char scene[1920]){
-	if ((80*y + x) >= 1920) { x = 0; y = 0;}
+	if ((80*y + x) >= 1760) { x = 0; y = 0;}
 	else if ((80*y + x) < 0) { x = 0; y = 0;}
 	enqueue(snake_x, x);
 	enqueue(snake_y, y);

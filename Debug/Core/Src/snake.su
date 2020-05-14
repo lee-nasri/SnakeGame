@@ -1,8 +1,8 @@
 snake.c:13:6:snake_init	24	static
-snake.c:24:6:snake_enqueue	24	static
-snake.c:34:6:snake_dequeue	24	static
-snake.c:42:6:snake_setDirection	16	static
-snake.c:76:6:snake_move	24	static
-snake.c:105:6:scene_setPixel	16	static
-snake.c:109:6:scene_mainmenu	16	static
-snake.c:122:6:scene_clear	24	static
+snake.c:33:6:snake_enqueue	24	static
+snake.c:43:6:snake_dequeue	24	static
+snake.c:51:6:snake_setDirection	16	static
+snake.c:85:6:snake_move	24	static
+snake.c:114:6:scene_setPixel	16	static
+snake.c:118:6:scene_mainmenu	16	static
+snake.c:131:6:scene_clear	24	static
