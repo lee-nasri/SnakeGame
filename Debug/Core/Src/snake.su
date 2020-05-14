@@ -1,7 +1,5 @@
-snake.c:17:6:snake_init	16	static
-snake.c:28:6:scene_mainmenu	4	static
-snake.c:41:6:scene_clear	24	static
-snake.c:45:6:snake_enqueue	16	static
-snake.c:53:6:snake_dequeue	16	static
-snake.c:61:6:snake_set_direction	16	static
-snake.c:95:13:snake_move	16	static
+snake.c:15:6:snake_init	24	static
+snake.c:25:6:snake_enqueue	24	static
+snake.c:33:6:snake_dequeue	24	static
+snake.c:41:6:snake_set_direction	16	static
+snake.c:75:6:snake_move	24	static

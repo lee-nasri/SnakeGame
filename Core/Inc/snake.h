@@ -8,14 +8,14 @@
 #define START_X 15 /* Starting coordinates of snake */
 #define START_Y 12
 
-void snake_init(void);
+void snake_init(char scene[1920]);
 
-void snake_enqueue(int x, int y);
+void snake_enqueue(int x, int y, char scene[1920]);
 
-void snake_dequeue();
+void snake_dequeue(char scene[1920]);
 
 void snake_set_direction(int direction);
 
-static void snake_move(void);
+void snake_move(char scene[1920]) ;
 
 #endif /* SRC_SNAKE_H_ */

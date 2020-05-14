@@ -20,7 +20,6 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
-#include "snake.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -64,6 +63,22 @@ static void MX_TIM4_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+void scene_mainmenu(char scene[1920]){
+	/* For observing the beginning of a pixel */
+	scene[0] = 'S'; scene[1] = 'T'; scene[2] = 'A'; scene[3] = 'R'; scene[4] = 'T';
+
+	scene[80*11 + 36] = 'S';
+	scene[80*11 + 37] = 'N';
+	scene[80*11 + 38] = 'A';
+	scene[80*11 + 39] = 'K';
+	scene[80*11 + 40] = 'E';
+	scene[80*11 + 43] = 'G';
+	scene[80*11 + 44] = 'O';
+}
+
+void scene_clear(char scene[1920]){
+	for(int i=0;i<1920; i++) scene[i] = ' ';
+}
 /* USER CODE END 0 */
 
 /**
@@ -97,13 +112,16 @@ int main(void)
   MX_USART2_UART_Init();
   MX_TIM4_Init();
   /* USER CODE BEGIN 2 */
-  snake_init();
+
+
   scene_clear(scene);
   scene_mainmenu(scene);
+
   printf("\033[2J\033[H"); /* Clear putty screen */
-  HAL_UART_Transmit_IT( &huart2, scene, 1920);
   HAL_UART_Receive_IT( &huart2, buffer, sizeof(buffer));
   HAL_Delay(delay_mainmenu);
+  //snake_init(scene);
+
   /* USER CODE END 2 */
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
@@ -111,9 +129,9 @@ int main(void)
   {
     /* USER CODE END WHILE */
     /* USER CODE BEGIN 3 */
-	  if (HAL_UART_Receive( &huart2, buffer, sizeof(buffer), 100000 ) == HAL_OK) {
-	  			  HAL_UART_Transmit( &huart2, buffer, sizeof(buffer), 100000 );
-	  		 }
+	  //snake_move(scene);
+	  HAL_UART_Transmit( &huart2, scene, 1920, 100000);
+	  HAL_Delay(1000);
   }
   /* USER CODE END 3 */
 }
@@ -289,7 +307,7 @@ static void MX_GPIO_Init(void)
 /* USER CODE BEGIN 4 */
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart){
     /* Get character from UART. Note that does not read two byte characters like arrows. */
-    char c = USART_ReceiveData(USART2);
+    char c = buffer[0];
 
     switch(c) {
     case 'w' :
@@ -319,9 +337,12 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart){
     case 'D' :
         snake_set_direction(RIGHT);
         break;
-    case 'G' :
-        snake_feed();
-        break; /* Used for testing to grow snake by 1 segment */
+    case 'K' :
+    	snake_init(scene);
+    	break;
+    case 'k' :
+        snake_init(scene);
+        break;
     default :
         break;
     }

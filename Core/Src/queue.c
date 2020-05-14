@@ -1,15 +1,8 @@
 // C program for array implementation of queue
-#include <stdio.h>
-#include <stdlib.h>
-#include <limits.h>
+#include "queue.h"
 
-// A structure to represent a queue
-struct Queue
-{
-    int front, rear, size;
-    unsigned capacity;
-    int* array;
-};
+
+
 
 // function to create a queue of given capacity.
 // It initializes size of queue as 0
