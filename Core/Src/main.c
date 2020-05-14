@@ -32,7 +32,6 @@
 char scene[1920];
 char buffer[1];
 char c;
-char x
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
@@ -79,7 +78,7 @@ int main(void)
   /* MCU Configuration--------------------------------------------------------*/
 
   /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
-k  HAL_Init();
+  HAL_Init();
 
   /* USER CODE BEGIN Init */
 
@@ -102,7 +101,7 @@ k  HAL_Init();
   scene_mainmenu(scene);
 
   printf("\033[2J\033[H"); /* Clear putty screen */
-  HAL_UART_Receive_IT( &huart2, buffer, sizeof(buffer));
+  HAL_UART_Receive_IT( &huart2, buffer, 1);
   /* USER CODE END 2 */
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
@@ -110,8 +109,9 @@ k  HAL_Init();
   {
     /* USER CODE END WHILE */
     /* USER CODE BEGIN 3 */
+	  snake_move(scene);
 	  HAL_UART_Transmit( &huart2, scene, 1920, 100000);
-	  HAL_Delay(500);
+	  HAL_Delay(200);
   }
   /* USER CODE END 3 */
 }
@@ -286,12 +286,9 @@ static void MX_GPIO_Init(void)
 
 /* USER CODE BEGIN 4 */
 
-void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart){
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart){
     /* Get character from UART. Note that does not read two byte characters like arrows. */
-
-
-
-    switch(c) {
+    switch(buffer[0]) {
     case 'w' :
         snake_setDirection(UP);
         break;
@@ -344,8 +341,8 @@ void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart){
     default :
         break;
     }
-    /* Clear interrupt flag */
-    //USART_ClearFlag(USART2, USART_FLAG_RXNE);
+    /* Restart the interrupt reception mode */
+    HAL_UART_Receive_IT( &huart2, buffer, 1);
 }
 void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart){
 
