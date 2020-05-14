@@ -18,10 +18,18 @@ void snake_setDirection(int direction);
 
 void snake_move(char scene[1920]) ;
 
+void snake_addScore(int addScore);
+
+void snake_getScore();
+
 void scene_setPixel(char scene[1920], int pixel);
 
 void scene_mainmenu(char scene[1920]);
 
 void scene_clear(char scene[1920]);
+
+void scene_setScore(char scene[1920]);
+
+char intTOchar(int intergers);
 
 #endif /* SRC_SNAKE_H_ */
