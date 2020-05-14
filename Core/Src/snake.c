@@ -9,21 +9,16 @@ static int snake_head_x;
 static int snake_head_y;
 static int snake_tail_x;
 static int snake_tail_y;
+static int score;
 
 void snake_init(char scene[1920]){
 	snake_x = createQueue(1000);
 	snake_y = createQueue(1000);
 	snake_direction = RIGHT;
 	for (int x = 0; x < 5; ++x) { snake_enqueue(x, 0, scene); }
-	scene[80*22 + 0] = 'S';
-	scene[80*22 + 1] = 'c';
-	scene[80*22 + 2] = 'o';
-	scene[80*22 + 3] = 'r';
-	scene[80*22 + 4] = 'e';
-	scene[80*22 + 6] = ':';
-	scene[80*22 + 8] = '0';
-	scene[80*22 + 9] = '0';
-	scene[80*22 + 10] = '0';
+	score = 0;
+	scene_setScore(scene);
+
 	snake_head_x = rear(snake_x);
 	snake_head_y = rear(snake_y);
 	snake_tail_x = front(snake_x);
@@ -37,6 +32,7 @@ void snake_enqueue(int x, int y, char scene[1920]){
 	enqueue(snake_y, y);
 	snake_head_x = rear(snake_x);
 	snake_head_y = rear(snake_y);
+	if ( scene[80 * y + x] == 'O' ) snake_feed(1);
 	scene[80 * y + x] = '@';
 }
 
@@ -111,6 +107,16 @@ void snake_move(char scene[1920]) {
     }
 }
 
+void snake_addScore(int addScore){
+	score += addScore;
+	scene_setScore(score);
+}
+
+
+void snake_getScore(){
+	return score;
+}
+
 void scene_setPixel(char scene[1920], int pixel){
 	scene[pixel] = 'X';
 }
@@ -132,4 +138,32 @@ void scene_clear(char scene[1920]){
 	for(int i=0;i<1920; i++) scene[i] = ' ';
 }
 
+void scene_setScore(char scene[1920]){
+	scene[80*22 + 0] = 'S';
+	scene[80*22 + 1] = 'c';
+	scene[80*22 + 2] = 'o';
+	scene[80*22 + 3] = 'r';
+	scene[80*22 + 4] = 'e';
+	scene[80*22 + 6] = ':';
+	int i1 = score%10;
+	int i2 = score%100 - i1;
+	int i3 = score%1000 - (i1+i2);
+
+	scene[80*22 + 8] = intTOchar(i1);;
+	scene[80*22 + 9] = intTOchar(i2);
+	scene[80*22 + 10] = intTochar(i3);
+}
+
+char intTOchar(int intergers){
+	if (integers == 1) return '1';
+	else if (integers == 2) return '2';
+	else if (integers == 3) return '3';
+	else if (integers == 4) return '4';
+	else if (integers == 5) return '5';
+	else if (integers == 6) return '6';
+	else if (integers == 7) return '7';
+	else if (integers == 8) return '8';
+	else if (integers == 9) return '9';
+	else return 'X';
+}
 
