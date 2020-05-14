@@ -11,7 +11,7 @@ static int *snake_tail_x;
 static int *snake_tail_y;
 
 
-static void snake_init(){
+void snake_init(){
 	for (int i = 0; i < 5; ++i) { snake_enqueue(0, i); }
 	snake_head_x = rear(snake_x);
 	snake_head_y = rear(snake_y);
@@ -19,7 +19,7 @@ static void snake_init(){
 	snake_tail_y = front(snake_y);
 }
 
-static void snake_enqueue(int x, int y, char scene[1920]){
+void snake_enqueue(int x, int y, char scene[1920]){
 	enqueue(snake_x, x);
 	enqueue(snake_y, y);
 	snake_head_x = rear(snake_x);
@@ -27,7 +27,7 @@ static void snake_enqueue(int x, int y, char scene[1920]){
 	scene[80*x + y] = '@';
 }
 
-static void snake_dequeue(char scene[1920]){
+void snake_dequeue(char scene[1920]){
 	int x = front(snake_x); dequeue(snake_x);
 	int y = front(snake_y); dequeue(snake_y);
 	snake_tail_x = front(snake_x);
@@ -35,7 +35,7 @@ static void snake_dequeue(char scene[1920]){
 	scene[80*x + y] = ' ';
 }
 
-static void snake_set_direction(int direction) {
+void snake_set_direction(int direction) {
 
     /* Sets a legal direction for the snake. */
     /* Note that the snake cannot turn back on itself*/
@@ -69,7 +69,7 @@ static void snake_set_direction(int direction) {
 
 }
 
-static void snake_move(char scene[1920]) {
+void snake_move(char scene[1920]) {
 
     /* Based on the snake direction, move head one coordinate*/
 	int head_x = snake_head_x;
