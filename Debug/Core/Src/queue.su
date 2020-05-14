@@ -1,0 +1,7 @@
+queue.c:16:15:createQueue	24	static
+queue.c:27:5:isFull	16	static
+queue.c:31:5:isEmpty	16	static
+queue.c:36:6:enqueue	16	static
+queue.c:48:5:dequeue	24	static
+queue.c:59:5:front	16	static
+queue.c:67:5:rear	16	static
