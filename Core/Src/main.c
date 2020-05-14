@@ -64,22 +64,6 @@ static void MX_TIM4_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-void scene_mainmenu(char scene[1920]){
-	/* For observing the beginning of a pixel */
-	scene[0] = 'S'; scene[1] = 'T'; scene[2] = 'A'; scene[3] = 'R'; scene[4] = 'T';
-
-	scene[80*11 + 36] = 'S';
-	scene[80*11 + 37] = 'N';
-	scene[80*11 + 38] = 'A';
-	scene[80*11 + 39] = 'K';
-	scene[80*11 + 40] = 'E';
-	scene[80*11 + 43] = 'G';
-	scene[80*11 + 44] = 'O';
-}
-
-void scene_clear(char scene[1920]){
-	for(int i=0;i<1920; i++) scene[i] = ' ';
-}
 /* USER CODE END 0 */
 
 /**
@@ -113,6 +97,7 @@ int main(void)
   MX_USART2_UART_Init();
   MX_TIM4_Init();
   /* USER CODE BEGIN 2 */
+  snake_init();
   scene_clear(scene);
   scene_mainmenu(scene);
   printf("\033[2J\033[H"); /* Clear putty screen */
@@ -307,16 +292,6 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart){
     char c = USART_ReceiveData(USART2);
 
     switch(c) {
-    case '1' :
-        snake_level_select(1);
-        break; /* Set difficulty 1 (Easy) */
-    case '2' :
-        snake_level_select(2);
-        break; /* Set difficulty 2 (Medium) */
-    case '3' :
-        snake_level_select(3);
-        break; /* Set difficulty 3 (Hard) */
-        /* Move snake in UP direction if allowed */
     case 'w' :
         snake_set_direction(UP);
         break;

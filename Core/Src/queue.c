@@ -13,8 +13,7 @@ struct Queue
 
 // function to create a queue of given capacity.
 // It initializes size of queue as 0
-struct Queue* createQueue(unsigned capacity)
-{
+struct Queue* createQueue(unsigned capacity){
     struct Queue* queue = (struct Queue*) malloc(sizeof(struct Queue));
     queue->capacity = capacity;
     queue->front = queue->size = 0;

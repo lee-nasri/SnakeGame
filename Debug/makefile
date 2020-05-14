@@ -40,8 +40,8 @@ SnakeGame_003.bin \
 all: SnakeGame_003.elf secondary-outputs
 
 # Tool invocations
-SnakeGame_003.elf: $(OBJS) $(USER_OBJS) /Users/nasri/Nasri/University/Year2_Semster2/Embedded_Lab/Workspace_001/SnakeGame_003/STM32F411RETX_FLASH.ld
-	arm-none-eabi-gcc -o "SnakeGame_003.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"/Users/nasri/Nasri/University/Year2_Semster2/Embedded_Lab/Workspace_001/SnakeGame_003/STM32F411RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="SnakeGame_003.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+SnakeGame_003.elf: $(OBJS) $(USER_OBJS) C:\Users\Nasmeen\STM32CubeIDE\workspace_1.3.0\SnakeGame_003\STM32F411RETX_FLASH.ld
+	arm-none-eabi-gcc -o "SnakeGame_003.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"C:\Users\Nasmeen\STM32CubeIDE\workspace_1.3.0\SnakeGame_003\STM32F411RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="SnakeGame_003.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 
