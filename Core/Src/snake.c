@@ -69,7 +69,7 @@ void snake_set_direction(int direction) {
 
 }
 
-void snake_move(char scene[1920]) {
+static void snake_move(char scene[1920]) {
 
     /* Based on the snake direction, move head one coordinate*/
 	int head_x = snake_head_x;
