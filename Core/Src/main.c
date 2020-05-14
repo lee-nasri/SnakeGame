@@ -301,7 +301,60 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart){
+    /* Get character from UART. Note that does not read two byte characters like arrows. */
+    char c = USART_ReceiveData(USART2);
 
+    switch(c) {
+    case '1' :
+        snake_level_select(1);
+        break; /* Set difficulty 1 (Easy) */
+    case '2' :
+        snake_level_select(2);
+        break; /* Set difficulty 2 (Medium) */
+    case '3' :
+        snake_level_select(3);
+        break; /* Set difficulty 3 (Hard) */
+        /* Move snake in UP direction if allowed */
+    case 'w' :
+        snake_set_direction(UP);
+        break;
+    case 'W' :
+        snake_set_direction(UP);
+        break;
+        /* Move snake in DOWN direction if allowed */
+    case 's' :
+        snake_set_direction(DOWN);
+        break;
+    case 'S' :
+        snake_set_direction(DOWN);
+        break;
+        /* Move snake in LEFT direction if allowed */
+    case 'a' :
+        snake_set_direction(LEFT);
+        break;
+    case 'A' :
+        snake_set_direction(LEFT);
+        break;
+        /* Move snake in RIGHT direction if allowed */
+    case 'd' :
+        snake_set_direction(RIGHT);
+        break;
+    case 'D' :
+        snake_set_direction(RIGHT);
+        break;
+    case 'G' :
+        snake_feed();
+        break; /* Used for testing to grow snake by 1 segment */
+    default :
+        break;
+    }
+    /* Clear interrupt flag */
+    USART_ClearFlag(USART2, USART_FLAG_RXNE);
+}
+void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart){
+
+}
 /* USER CODE END 4 */
 
 /**
