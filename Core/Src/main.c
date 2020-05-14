@@ -20,6 +20,7 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "snake.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -350,7 +351,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart){
         break;
     }
     /* Clear interrupt flag */
-    USART_ClearFlag(USART2, USART_FLAG_RXNE);
+    //USART_ClearFlag(USART2, USART_FLAG_RXNE);
 }
 void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart){
 
