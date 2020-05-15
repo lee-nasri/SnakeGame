@@ -110,8 +110,9 @@ int main(void)
     /* USER CODE BEGIN 3 */
 	  HAL_UART_Transmit( &huart2, clearSceen_code, 13, 100000);
 	  snake_move(scene);
+	  snake_newFood(scene);
 	  HAL_UART_Transmit( &huart2, scene, 1920, 100000);
-	  HAL_Delay(200);
+	  HAL_Delay(100);
   }
   /* USER CODE END 3 */
 }

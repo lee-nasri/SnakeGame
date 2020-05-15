@@ -9,6 +9,9 @@ static int snake_head_x;
 static int snake_head_y;
 static int snake_tail_x;
 static int snake_tail_y;
+static int food_constant;
+static int food_time;
+static int isPlay;
 
 
 void snake_init(char scene[1920]){
@@ -17,6 +20,7 @@ void snake_init(char scene[1920]){
 	snake_direction = RIGHT;
 	for (int x = 0; x < 20; ++x) { snake_enqueue(x, 0, scene); }
 	score = 0;
+	food_time = 0; food_constant = 10; isPlay = 1;
 	scene_setScore(scene);
 	snake_head_x = rear(snake_x);
 	snake_head_y = rear(snake_y);
@@ -136,6 +140,15 @@ void snake_feed(int foodScore, char scene[1920]){
 	scene_setScore(scene);
 }
 
+void snake_newFood(char scene[1920]){
+	if ( isPlay == 1) {
+		food_time ++;
+		int x = rand() % 80;
+		int y = rand() % 24;
+		if ( scene[80 * y + x] == ' ' && food_time % food_constant == 0) scene[80 * y + x] = 'O';
+	}
+}
+
 void snake_gameOver(char scene[1920]){
 	while ( !isEmpty( snake_x) )  { snake_dequeue(scene); }
 	scene_setPixelX(35, 44, 10, scene, "Game  Over", 10);
@@ -174,10 +187,12 @@ void scene_mainmenu(char scene[1920]){
 	scene_setPixelX(0, 4, 0, scene, "START", 5);
 	scene_setPixelX(36, 44, 10, scene, "SNAKE  GO", 9);
 	scene_setPixelX(25, 52, 11, scene, "Press 'K' to start the game.", 28);
+	isPlay = 0;
 }
 
 void scene_clear(char scene[1920]){
 	for(int i=0;i<1920; i++) scene[i] = ' ';
+	isPlay = 0;
 }
 
 char intTOchar(int integers){

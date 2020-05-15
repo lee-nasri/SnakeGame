@@ -8,6 +8,10 @@
 #define START_X 15 /* Starting coordinates of snake */
 #define START_Y 12
 
+#include <time.h>
+#include <stdio.h>
+#include <stdlib.h>
+
 void snake_init(char scene[1920]);
 
 void snake_enqueue(int x, int y, char scene[1920]);
