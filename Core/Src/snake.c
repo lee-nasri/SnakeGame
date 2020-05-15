@@ -15,7 +15,7 @@ void snake_init(char scene[1920]){
 	snake_x = createQueue(1000);
 	snake_y = createQueue(1000);
 	snake_direction = RIGHT;
-	for (int x = 0; x < 5; ++x) { snake_enqueue(x, 0, scene); }
+	for (int x = 0; x < 20; ++x) { snake_enqueue(x, 0, scene); }
 	score = 0;
 	scene_setScore(scene);
 	snake_head_x = rear(snake_x);
@@ -137,12 +137,20 @@ void snake_feed(int foodScore, char scene[1920]){
 }
 
 void snake_gameOver(char scene[1920]){
-	scene_clear(scene);
 	while ( !isEmpty( snake_x) )  { snake_dequeue(scene); }
+	scene_setPixelX(35, 44, 10, scene, "Game  Over", 10);
+	scene_setPixelX(28, 52, 11, scene, "Press 'K' to start again.", 25);
 }
 
-void scene_setPixel(char scene[1920], int pixel){
-	scene[pixel] = 'X';
+void scene_setPixelX(int x1, int x2, int y, char scene[1920], char text[], int size){
+	if (x1 > x2) { scene_setPixelX(x2, x1, y, scene, text, size); }
+	else {
+		int indeX = 0;
+		for (int i=x1; i<=x2; i++) { scene[80 * y + i] = text[indeX];
+		indeX++;
+		if (indeX >= size) return ;
+		}
+	}
 }
 
 void scene_setScore(char scene[1920]){
@@ -163,15 +171,9 @@ void scene_setScore(char scene[1920]){
 
 void scene_mainmenu(char scene[1920]){
 	/* For observing the beginning of a pixel */
-	scene[0] = 'S'; scene[1] = 'T'; scene[2] = 'A'; scene[3] = 'R'; scene[4] = 'T';
-
-	scene[80*11 + 36] = 'S';
-	scene[80*11 + 37] = 'N';
-	scene[80*11 + 38] = 'A';
-	scene[80*11 + 39] = 'K';
-	scene[80*11 + 40] = 'E';
-	scene[80*11 + 43] = 'G';
-	scene[80*11 + 44] = 'O';
+	scene_setPixelX(0, 4, 0, scene, "START", 5);
+	scene_setPixelX(36, 44, 10, scene, "SNAKE  GO", 9);
+	scene_setPixelX(25, 52, 11, scene, "Press 'K' to start the game.", 28);
 }
 
 void scene_clear(char scene[1920]){

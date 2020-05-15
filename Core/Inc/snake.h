@@ -24,7 +24,7 @@ void snake_feed(int foodScore, char scene[1920]);
 
 void snake_gameOver(char scene[1920]);
 
-void scene_setPixel(char scene[1920], int pixel);
+void scene_setPixelX(int x1, int x2, int y, char scene[1920], char text[], int size);
 
 void scene_setScore(char scene[1920]);
 
