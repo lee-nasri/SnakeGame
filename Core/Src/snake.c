@@ -9,7 +9,7 @@ static int snake_head_x;
 static int snake_head_y;
 static int snake_tail_x;
 static int snake_tail_y;
-static int score;
+
 
 void snake_init(char scene[1920]){
 	snake_x = createQueue(1000);
@@ -18,11 +18,12 @@ void snake_init(char scene[1920]){
 	for (int x = 0; x < 5; ++x) { snake_enqueue(x, 0, scene); }
 	score = 0;
 	scene_setScore(scene);
-
 	snake_head_x = rear(snake_x);
 	snake_head_y = rear(snake_y);
 	snake_tail_x = front(snake_x);
 	snake_tail_y = front(snake_y);
+
+	scene[500] = 'O';
 }
 
 void snake_enqueue(int x, int y, char scene[1920]){
@@ -32,7 +33,6 @@ void snake_enqueue(int x, int y, char scene[1920]){
 	enqueue(snake_y, y);
 	snake_head_x = rear(snake_x);
 	snake_head_y = rear(snake_y);
-	if ( scene[80 * y + x] == 'O' ) snake_feed(1);
 	scene[80 * y + x] = '@';
 }
 
@@ -83,42 +83,82 @@ void snake_move(char scene[1920]) {
     /* Based on the snake direction, move head one coordinate*/
 	int head_x = snake_head_x;
 	int head_y = snake_head_y;
+	int foodScore;
 
     switch(snake_direction) {
-        /* UP and DOWN are y-axis roll-over 0-15 */
     case UP :
+    	foodScore = snake_foodScore(head_x, head_y - 1, scene);
     	snake_enqueue(head_x, head_y - 1, scene);
-    	snake_dequeue(scene);
+    	if ( foodScore == 0 )  snake_dequeue(scene);
+    	else if ( foodScore == -1 ) snake_gameOver(scene);
+    	else snake_feed(foodScore, scene);
         break;
     case DOWN :
+    	foodScore = snake_foodScore(head_x, head_y + 1, scene);
     	snake_enqueue(head_x, head_y+1, scene);
-    	snake_dequeue(scene);
+    	if ( foodScore == 0 )  snake_dequeue(scene);
+    	else if ( foodScore == -1 ) snake_gameOver(scene);
+    	else snake_feed(foodScore, scene);
         break;
     case LEFT :
+    	foodScore = snake_foodScore(head_x - 1, head_y, scene);
     	snake_enqueue(head_x-1, head_y, scene);
-    	snake_dequeue(scene);
+    	if ( foodScore == 0 )  snake_dequeue(scene);
+    	else if ( foodScore == -1 ) snake_gameOver(scene);
+    	else snake_feed(foodScore, scene);
         break;
     case RIGHT :
+    	foodScore = snake_foodScore(head_x + 1, head_y, scene);
     	snake_enqueue(head_x+1, head_y, scene);
-    	snake_dequeue(scene);
+    	if ( foodScore == 0 )  snake_dequeue(scene);
+    	else if ( foodScore == -1 ) snake_gameOver(scene);
+    	else snake_feed(foodScore, scene);
         break;
     default :
         break;
     }
 }
 
-void snake_addScore(int addScore){
-	score += addScore;
-	scene_setScore(score);
+int snake_foodScore(int x, int y, char scene[1920]){
+	/* This function checks what the next pixel is ?
+	 * if next pixel is food. return score of that food
+	 * if next pixel is snake. return -1 -> game over
+	 * else return 0 mean next pixel is free space.
+	 */
+	if ( scene[80 * y + x] == 'O' ) return 1;
+	else if ( scene[80 * y + x] == '+'  ) return 2;
+	else if ( scene[80 * y + x] == '@' ) return -1;
+	return 0;
 }
 
+void snake_feed(int foodScore, char scene[1920]){
+	score += foodScore;
+	scene_setScore(scene);
+}
 
-void snake_getScore(){
-	return score;
+void snake_gameOver(char scene[1920]){
+	scene_clear(scene);
+	while ( !isEmpty( snake_x) )  { snake_dequeue(scene); }
 }
 
 void scene_setPixel(char scene[1920], int pixel){
 	scene[pixel] = 'X';
+}
+
+void scene_setScore(char scene[1920]){
+	scene[80*22 + 0] = 'S';
+	scene[80*22 + 1] = 'c';
+	scene[80*22 + 2] = 'o';
+	scene[80*22 + 3] = 'r';
+	scene[80*22 + 4] = 'e';
+	scene[80*22 + 6] = ':';
+	int i1 = score%10;
+	int i2 = (score%100) / 10;
+	int i3 = (score%1000) / 100;
+
+	scene[80*22 + 10] = intTOchar(i1);
+	scene[80*22 + 9] = intTOchar(i2);
+	scene[80*22 + 8] = intTOchar(i3);
 }
 
 void scene_mainmenu(char scene[1920]){
@@ -138,23 +178,7 @@ void scene_clear(char scene[1920]){
 	for(int i=0;i<1920; i++) scene[i] = ' ';
 }
 
-void scene_setScore(char scene[1920]){
-	scene[80*22 + 0] = 'S';
-	scene[80*22 + 1] = 'c';
-	scene[80*22 + 2] = 'o';
-	scene[80*22 + 3] = 'r';
-	scene[80*22 + 4] = 'e';
-	scene[80*22 + 6] = ':';
-	int i1 = score%10;
-	int i2 = score%100 - i1;
-	int i3 = score%1000 - (i1+i2);
-
-	scene[80*22 + 8] = intTOchar(i1);;
-	scene[80*22 + 9] = intTOchar(i2);
-	scene[80*22 + 10] = intTochar(i3);
-}
-
-char intTOchar(int intergers){
+char intTOchar(int integers){
 	if (integers == 1) return '1';
 	else if (integers == 2) return '2';
 	else if (integers == 3) return '3';
@@ -164,6 +188,6 @@ char intTOchar(int intergers){
 	else if (integers == 7) return '7';
 	else if (integers == 8) return '8';
 	else if (integers == 9) return '9';
-	else return 'X';
+	else return '0';
 }
 

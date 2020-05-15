@@ -324,20 +324,12 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart){
     	scene_clear(scene);
         snake_init(scene);
         break;
-    case 'L' :
-    	scene_clear(scene);
-        scene_mainmenu(scene);
-        break;
-    case 'l' :
-    	scene_clear(scene);
-    	scene_mainmenu(scene);
-        break;
-    case 'M' :
-    	snake_move(scene);
-        break;
-    case 'm' :
-    	snake_move(scene);
-        break;
+    case 'f' :
+    	snake_feed(1, scene);
+    	break ;
+    case 'F' :
+        snake_feed(1, scene);
+        break ;
     default :
         break;
     }
