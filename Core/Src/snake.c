@@ -3,7 +3,13 @@
 
 struct Queue* snake_x;
 struct Queue* snake_y;
+struct Queue* enemy_1_x;
+struct Queue* enemy_1_y;
+struct Queue* enemy_2_x;
+struct Queue* enemy_2_y;
 static volatile int snake_direction;
+static volatile int enemy_1_direction;
+static volatile int enemy_2_direction;
 static volatile int score; /* Current score of game */
 static int snake_head_x;
 static int snake_head_y;
@@ -12,22 +18,25 @@ static int snake_tail_y;
 static int food_constant;
 static int food_time;
 static int isPlay;
+static int level;
 
 
 void snake_init(char scene[1920]){
-	snake_x = createQueue(1000);
-	snake_y = createQueue(1000);
+	/* Initiate my snake */
+	snake_x = createQueue(300); snake_y = createQueue(300);
 	snake_direction = RIGHT;
-	for (int x = 0; x < 20; ++x) { snake_enqueue(x, 0, scene); }
-	score = 0;
-	food_time = 0; food_constant = 10; isPlay = 1;
-	scene_setScore(scene);
-	snake_head_x = rear(snake_x);
-	snake_head_y = rear(snake_y);
-	snake_tail_x = front(snake_x);
-	snake_tail_y = front(snake_y);
+	for (int x = 0; x < 5; ++x) { snake_enqueue(x, 0, scene); }
+	snake_head_x = rear(snake_x); snake_head_y = rear(snake_y);
+	snake_tail_x = front(snake_x); snake_tail_y = front(snake_y);
 
-	scene[500] = 'O';
+	/* Initiate enemy */
+	enemy_1_x = createQueue(300); enemy_1_y = createQueue(300);
+	enemy_2_x = createQueue(300); enemy_2_y = createQueue(300);
+	enemy_1_direction = RIGHT;
+	enemy_2_direction = LEFT;
+	/* Initiate game constant */
+	scene_setScore(scene);
+	score = 0; food_time = 0; food_constant = 20; isPlay = 1; level = 1;
 }
 
 void snake_enqueue(int x, int y, char scene[1920]){
@@ -48,10 +57,23 @@ void snake_dequeue(char scene[1920]){
 	scene[80*y + x] = ' ';
 }
 
-void snake_setDirection(int direction) {
+void scene_setScore(char scene[1920]){
+	scene[80*22 + 0] = 'S';
+	scene[80*22 + 1] = 'c';
+	scene[80*22 + 2] = 'o';
+	scene[80*22 + 3] = 'r';
+	scene[80*22 + 4] = 'e';
+	scene[80*22 + 6] = ':';
+	int i1 = score%10;
+	int i2 = (score%100) / 10;
+	int i3 = (score%1000) / 100;
 
-    /* Sets a legal direction for the snake. */
-    /* Note that the snake cannot turn back on itself*/
+	scene[80*22 + 10] = intTOchar(i1);
+	scene[80*22 + 9] = intTOchar(i2);
+	scene[80*22 + 8] = intTOchar(i3);
+}
+
+void snake_setDirection(int direction) {
     switch(direction) {
     case LEFT :
         if(snake_direction != RIGHT) {
@@ -155,6 +177,7 @@ void snake_gameOver(char scene[1920]){
 	scene_setPixelX(28, 52, 11, scene, "Press 'K' to start again.", 25);
 }
 
+
 void scene_setPixelX(int x1, int x2, int y, char scene[1920], char text[], int size){
 	if (x1 > x2) { scene_setPixelX(x2, x1, y, scene, text, size); }
 	else {
@@ -166,20 +189,15 @@ void scene_setPixelX(int x1, int x2, int y, char scene[1920], char text[], int s
 	}
 }
 
-void scene_setScore(char scene[1920]){
-	scene[80*22 + 0] = 'S';
-	scene[80*22 + 1] = 'c';
-	scene[80*22 + 2] = 'o';
-	scene[80*22 + 3] = 'r';
-	scene[80*22 + 4] = 'e';
-	scene[80*22 + 6] = ':';
-	int i1 = score%10;
-	int i2 = (score%100) / 10;
-	int i3 = (score%1000) / 100;
-
-	scene[80*22 + 10] = intTOchar(i1);
-	scene[80*22 + 9] = intTOchar(i2);
-	scene[80*22 + 8] = intTOchar(i3);
+void scene_setPixelY(int x, int y1, int y2, char scene[1920], char text[], int size){
+	if (y1 > y2) { scene_setPixelX(x, y1, y2, scene, text, size); }
+	else {
+		int indeX = 0;
+		for (int i=y1; i<=y2; i++) { scene[80 * i + x] = text[indeX];
+		indeX++;
+		if (indeX >= size) return ;
+		}
+	}
 }
 
 void scene_mainmenu(char scene[1920]){
@@ -187,6 +205,10 @@ void scene_mainmenu(char scene[1920]){
 	scene_setPixelX(0, 4, 0, scene, "START", 5);
 	scene_setPixelX(36, 44, 10, scene, "SNAKE  GO", 9);
 	scene_setPixelX(25, 52, 11, scene, "Press 'K' to start the game.", 28);
+	scene_setPixelX(0, 79, 0, scene, "________________________________________________________________________________", 80);
+	scene_setPixelX(0, 79, 22, scene, "________________________________________________________________________________", 80);
+	scene_setPixelY(0, 1, 22, scene, "||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||", 80);
+	scene_setPixelY(79, 1, 22, scene, "||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||", 80);
 	isPlay = 0;
 }
 
@@ -207,4 +229,5 @@ char intTOchar(int integers){
 	else if (integers == 9) return '9';
 	else return '0';
 }
+
 
