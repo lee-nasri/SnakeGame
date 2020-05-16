@@ -17,9 +17,11 @@ static int snake_tail_x;
 static int snake_tail_y;
 static int food_constant;
 static int food_time;
+static int obstacle_constant;
+static int obstacle_time;
 static int isPlay;
 static int level;
-static int level_constanttime;
+static int level_constant;
 
 
 void snake_init(char scene[1920]){
@@ -39,7 +41,8 @@ void snake_init(char scene[1920]){
 	scene_setScore(scene);
 	scene_setLevel(scene);
 	score = 0; food_time = 0; food_constant = 20; isPlay = 1;
-	level = 1; level_constanttime = 10;
+	obstacle_time = 0; obstacle_constant = 20;
+	level = 1; scene_setLevel(scene); level_constant = 60;
 }
 
 void snake_enqueue(int x, int y, char scene[1920]){
@@ -70,6 +73,7 @@ void scene_setScore(char scene[1920]){
 	int i1 = score%10;
 	int i2 = (score%100) / 10;
 	int i3 = (score%1000) / 100;
+	if (score < 0) snake_gameOver(scene);
 
 	scene[80*22 + 10] = intTOchar(i1);
 	scene[80*22 + 9] = intTOchar(i2);
@@ -119,28 +123,28 @@ void snake_move(char scene[1920]) {
     	foodScore = snake_foodScore(head_x, head_y - 1, scene);
     	snake_enqueue(head_x, head_y - 1, scene);
     	if ( foodScore == 0 )  snake_dequeue(scene);
-    	else if ( foodScore == -1 ) snake_gameOver(scene);
+    	else if ( foodScore == -99 ) snake_gameOver(scene);
     	else snake_feed(foodScore, scene);
         break;
     case DOWN :
     	foodScore = snake_foodScore(head_x, head_y + 1, scene);
     	snake_enqueue(head_x, head_y+1, scene);
     	if ( foodScore == 0 )  snake_dequeue(scene);
-    	else if ( foodScore == -1 ) snake_gameOver(scene);
+    	else if ( foodScore == -99 ) snake_gameOver(scene);
     	else snake_feed(foodScore, scene);
         break;
     case LEFT :
     	foodScore = snake_foodScore(head_x - 1, head_y, scene);
     	snake_enqueue(head_x-1, head_y, scene);
     	if ( foodScore == 0 )  snake_dequeue(scene);
-    	else if ( foodScore == -1 ) snake_gameOver(scene);
+    	else if ( foodScore == -99 ) snake_gameOver(scene);
     	else snake_feed(foodScore, scene);
         break;
     case RIGHT :
     	foodScore = snake_foodScore(head_x + 1, head_y, scene);
     	snake_enqueue(head_x+1, head_y, scene);
     	if ( foodScore == 0 )  snake_dequeue(scene);
-    	else if ( foodScore == -1 ) snake_gameOver(scene);
+    	else if ( foodScore == -99 ) snake_gameOver(scene);
     	else snake_feed(foodScore, scene);
         break;
     default :
@@ -155,8 +159,8 @@ int snake_foodScore(int x, int y, char scene[1920]){
 	 * else return 0 mean next pixel is free space.
 	 */
 	if ( scene[80 * y + x] == 'O' ) return 1;
-	else if ( scene[80 * y + x] == '+'  ) return 2;
-	else if ( scene[80 * y + x] == '@' ) return -1;
+	else if ( scene[80 * y + x] == '#'  ) return -1;
+	else if ( scene[80 * y + x] == '@' ) return -99;
 	return 0;
 }
 
@@ -170,7 +174,16 @@ void snake_newFood(char scene[1920]){
 		food_time ++;
 		int x = rand() % 80;
 		int y = rand() % 24;
-		if ( scene[80 * y + x] == ' ' && food_time % food_constant == 0) scene[80 * y + x] = 'O';
+		if ( (scene[80 * y + x] == ' ' || scene[80 * y + x] == '#') && food_time % food_constant == 0) scene[80 * y + x] = 'O';
+	}
+}
+
+void snake_newObstacle(char scene[1920]){
+	if ( isPlay == 1) {
+		obstacle_time ++;
+		int x = rand() % 80;
+		int y = rand() % 24;
+		if ( scene[80 * y + x] == ' ' && obstacle_time % obstacle_constant == 0) scene[80 * y + x] = '#';
 	}
 }
 
@@ -181,7 +194,11 @@ void snake_gameOver(char scene[1920]){
 }
 
 void snake_levelUp(int timeX, char scene[1920]){
-	if (timeX%5 == 0 && level < 5) { level++; scene_setLevel(scene);}
+	if (level == 1 && timeX % 50 == 0) { obstacle_constant = 50; level++; scene_setLevel(scene); }
+	else if (level == 2 && timeX % 150 == 0) { obstacle_constant = 40; level++; scene_setLevel(scene); }
+	else if (level == 3 && timeX % 300 == 0) { obstacle_constant = 30; level++; scene_setLevel(scene); }
+	else if (level == 4 && timeX % 600 == 0) { obstacle_constant = 20; level++; scene_setLevel(scene); }
+	else if (level == 5 && timeX % 1200 == 0) { obstacle_constant = 10; level++; scene_setLevel(scene); }
 }
 
 void scene_setLevel(char scene[1920]){

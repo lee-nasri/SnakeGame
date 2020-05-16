@@ -113,6 +113,7 @@ int main(void)
 		snake_levelUp(timeX, scene);
 		snake_move(scene);
 		snake_newFood(scene);
+		snake_newObstacle(scene);
 		HAL_UART_Transmit( &huart2, scene, 1920, 100000);
 		HAL_Delay(50);
   }
