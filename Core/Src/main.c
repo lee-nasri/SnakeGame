@@ -33,7 +33,10 @@ char scene[1920];
 char buffer[1];
 char clearSceen_code[13]  = "\033[2J\033[H";
 int update = 0;
-int timeX = 0;
+int secondX = 0;
+int minuteX = 0;
+int hourX = 0;
+int countX = 0;
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
@@ -112,7 +115,6 @@ int main(void)
     /* USER CODE BEGIN 3 */
 	  if (update == 1){
 			HAL_UART_Transmit( &huart2, clearSceen_code, 13, 100000);
-			snake_levelUp(timeX, scene);
 			snake_move(scene);
 			snake_newFood(scene);
 			snake_newObstacle(scene);
@@ -279,10 +281,8 @@ static void MX_GPIO_Init(void)
 
 /* USER CODE BEGIN 4 */
 
-void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim){\
-	timeX++;
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim){
 	update = 1;
-	HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_5);
 }
 
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart){
@@ -323,6 +323,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart){
     	scene_clear(scene);
         snake_init(scene);
         break;
+    /* press 'f' for test only */
     case 'f' :
     	snake_feed(1, scene);
     	break ;

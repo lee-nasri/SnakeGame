@@ -5,8 +5,6 @@
 #define RIGHT 2
 #define DOWN  3
 #define LEFT  4
-#define START_X 15 /* Starting coordinates of snake */
-#define START_Y 12
 
 #include <time.h>
 #include <stdio.h>
@@ -32,7 +30,7 @@ void snake_newObstacle(char scene[1920]);
 
 void snake_gameOver(char scene[1920]);
 
-void snake_levelUp(int timeX, char scene[1920]);
+void snake_levelUp(char scene[1920]);
 
 void scene_setLevel(char scene[1920]);
 
