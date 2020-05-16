@@ -28,6 +28,10 @@ void snake_feed(int foodScore, char scene[1920]);
 
 void snake_gameOver(char scene[1920]);
 
+void snake_levelUp(int timeX, char scene[1920]);
+
+void scene_setLevel(char scene[1920]);
+
 void scene_setPixelX(int x1, int x2, int y, char scene[1920], char text[], int size);
 
 void scene_setPixelY(int x, int y1, int y2, char scene[1920], char text[], int size);

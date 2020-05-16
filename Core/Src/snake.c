@@ -19,6 +19,7 @@ static int food_constant;
 static int food_time;
 static int isPlay;
 static int level;
+static int level_constanttime;
 
 
 void snake_init(char scene[1920]){
@@ -36,7 +37,9 @@ void snake_init(char scene[1920]){
 	enemy_2_direction = LEFT;
 	/* Initiate game constant */
 	scene_setScore(scene);
-	score = 0; food_time = 0; food_constant = 20; isPlay = 1; level = 1;
+	scene_setLevel(scene);
+	score = 0; food_time = 0; food_constant = 20; isPlay = 1;
+	level = 1; level_constanttime = 10;
 }
 
 void snake_enqueue(int x, int y, char scene[1920]){
@@ -175,6 +178,15 @@ void snake_gameOver(char scene[1920]){
 	while ( !isEmpty( snake_x) )  { snake_dequeue(scene); }
 	scene_setPixelX(35, 44, 10, scene, "Game  Over", 10);
 	scene_setPixelX(28, 52, 11, scene, "Press 'K' to start again.", 25);
+}
+
+void snake_levelUp(int timeX, char scene[1920]){
+	if (timeX%5 == 0 && level < 5) { level++; scene_setLevel(scene);}
+}
+
+void scene_setLevel(char scene[1920]){
+	scene_setPixelX(0, 7, 23, scene, "level : ", 8);
+	scene[80 * 23 + 8] = intTOchar(level);
 }
 
 
