@@ -181,9 +181,11 @@ void snake_newFood(char scene[1920]){
 void snake_newObstacle(char scene[1920]){
 	if ( isPlay == 1) {
 		obstacle_time ++;
-		int x = rand() % 80;
-		int y = rand() % 24;
-		if ( scene[80 * y + x] == ' ' && obstacle_time % obstacle_constant == 0) scene[80 * y + x] = '#';
+		if ( obstacle_time % obstacle_constant == 0 ){
+			int x = rand() % 80;
+			int y = rand() % 24;
+			if ( scene[80 * y + x] == ' ') scene[80 * y + x] = '#';
+		}
 	}
 }
 
@@ -194,11 +196,11 @@ void snake_gameOver(char scene[1920]){
 }
 
 void snake_levelUp(int timeX, char scene[1920]){
-	if (level == 1 && timeX % 50 == 0) { obstacle_constant = 50; level++; scene_setLevel(scene); }
-	else if (level == 2 && timeX % 150 == 0) { obstacle_constant = 40; level++; scene_setLevel(scene); }
-	else if (level == 3 && timeX % 300 == 0) { obstacle_constant = 30; level++; scene_setLevel(scene); }
-	else if (level == 4 && timeX % 600 == 0) { obstacle_constant = 20; level++; scene_setLevel(scene); }
-	else if (level == 5 && timeX % 1200 == 0) { obstacle_constant = 10; level++; scene_setLevel(scene); }
+	if (level == 1 && timeX % 50 == 0) { obstacle_constant = 100; level++; scene_setLevel(scene); }
+	else if (level == 2 && timeX % 150 == 0) { obstacle_constant = 80; level++; scene_setLevel(scene); }
+	else if (level == 3 && timeX % 300 == 0) { obstacle_constant = 60; level++; scene_setLevel(scene); }
+	else if (level == 4 && timeX % 600 == 0) { obstacle_constant = 40; level++; scene_setLevel(scene); }
+	else if (level == 5 && timeX % 1200 == 0) { obstacle_constant = 20; level++; scene_setLevel(scene); }
 }
 
 void scene_setLevel(char scene[1920]){

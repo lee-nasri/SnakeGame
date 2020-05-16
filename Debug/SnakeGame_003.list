@@ -3870,6 +3870,7 @@ __weak void HAL_Delay(uint32_t Delay)
  8001b4c:	60fb      	str	r3, [r7, #12]
   }
 
+
   while((HAL_GetTick() - tickstart) < wait)
  8001b4e:	bf00      	nop
  8001b50:	f7ff ffde 	bl	8001b10 <HAL_GetTick>
