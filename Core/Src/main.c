@@ -32,6 +32,7 @@
 char scene[1920];
 char buffer[1];
 char clearSceen_code[13]  = "\033[2J\033[H";
+int update = 0;
 int timeX = 0;
 /* USER CODE END PTD */
 
@@ -109,13 +110,15 @@ int main(void)
   {
     /* USER CODE END WHILE */
     /* USER CODE BEGIN 3 */
-		HAL_UART_Transmit( &huart2, clearSceen_code, 13, 100000);
-		snake_levelUp(timeX, scene);
-		snake_move(scene);
-		snake_newFood(scene);
-		snake_newObstacle(scene);
-		HAL_UART_Transmit( &huart2, scene, 1920, 100000);
-		HAL_Delay(50);
+	  if (update == 1){
+			HAL_UART_Transmit( &huart2, clearSceen_code, 13, 100000);
+			snake_levelUp(timeX, scene);
+			snake_move(scene);
+			snake_newFood(scene);
+			snake_newObstacle(scene);
+			HAL_UART_Transmit( &huart2, scene, 1920, 100000);
+			update = 0;
+	  }
   }
   /* USER CODE END 3 */
 }
@@ -278,6 +281,7 @@ static void MX_GPIO_Init(void)
 
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim){\
 	timeX++;
+	update = 1;
 	HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_5);
 }
 
