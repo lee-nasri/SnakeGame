@@ -23,3 +23,6 @@ increate the baudrate.
 
 Your task is not to create a complete program, but it must be in a useable to the point where we can
 test the requirement above.
+
+## Demo video
+https://www.youtube.com/watch?v=qCJ90mYsEtg
